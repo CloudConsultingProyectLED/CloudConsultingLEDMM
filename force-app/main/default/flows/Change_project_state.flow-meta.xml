@@ -79,7 +79,7 @@
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Start_Date__c</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
+                <operator>LessThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>formuladate</elementReference>
                 </rightValue>
@@ -153,8 +153,8 @@
         <object>Project__c</object>
         <schedule>
             <frequency>Daily</frequency>
-            <startDate>2022-03-10</startDate>
-            <startTime>16:40:00.000Z</startTime>
+            <startDate>2022-03-14</startDate>
+            <startTime>00:00:00.000Z</startTime>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>

@@ -2,10 +2,26 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
     <assignments>
+        <name>Init_total_hours</name>
+        <label>Init total_hours</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <assignmentItems>
+            <assignToReference>total_hours</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Resources_Loop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Sum_Resources_Hours</name>
         <label>Sum Resources Hours</label>
         <locationX>264</locationX>
-        <locationY>575</locationY>
+        <locationY>671</locationY>
         <assignmentItems>
             <assignToReference>total_hours</assignToReference>
             <operator>Add</operator>
@@ -17,13 +33,13 @@
             <targetReference>Resources_Loop</targetReference>
         </connector>
     </assignments>
-    <interviewLabel>Refresh Covered Hours for Proyect Role {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Refresh Covered Hours for Proyect Role</label>
+    <interviewLabel>Resources Delete Refresh Covered Hours for Project Role {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Resources Delete Refresh Covered Hours for Project Role</label>
     <loops>
         <name>Resources_Loop</name>
         <label>Resources Loop</label>
         <locationX>176</locationX>
-        <locationY>455</locationY>
+        <locationY>551</locationY>
         <collectionReference>Get_Resources</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -53,14 +69,13 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <description>Only Resources from current Project Id and the current Role</description>
         <name>Get_Resources</name>
         <label>Get Resources</label>
         <locationX>176</locationX>
-        <locationY>335</locationY>
+        <locationY>311</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Resources_Loop</targetReference>
+            <targetReference>Init_total_hours</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -77,6 +92,13 @@
                 <elementReference>$Record.Role__c</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>Id</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Resource__c</object>
         <queriedFields>Id</queriedFields>
@@ -87,13 +109,13 @@
         <name>Update_Project_Role_record</name>
         <label>Update Project Role record</label>
         <locationX>176</locationX>
-        <locationY>791</locationY>
+        <locationY>887</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Project__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.Project__r.Id</elementReference>
+                <elementReference>$Record.Project__c</elementReference>
             </value>
         </filters>
         <filters>
@@ -117,30 +139,11 @@
         <connector>
             <targetReference>Get_Resources</targetReference>
         </connector>
-        <filterLogic>or</filterLogic>
-        <filters>
-            <field>Hours__c</field>
-            <operator>IsChanged</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
         <object>Resource__c</object>
-        <recordTriggerType>Update</recordTriggerType>
-        <triggerType>RecordAfterSave</triggerType>
+        <recordTriggerType>Delete</recordTriggerType>
+        <triggerType>RecordBeforeDelete</triggerType>
     </start>
     <status>Active</status>
-    <variables>
-        <name>CoveredHours</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <scale>2</scale>
-        <value>
-            <numberValue>0.0</numberValue>
-        </value>
-    </variables>
     <variables>
         <name>total_hours</name>
         <dataType>Number</dataType>

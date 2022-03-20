@@ -17,8 +17,8 @@
             <targetReference>Resources_Loop</targetReference>
         </connector>
     </assignments>
-    <interviewLabel>Refresh Covered Hours for Proyect Role {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Refresh Covered Hours for Proyect Role</label>
+    <interviewLabel>Resources Insert Refresh Covered Hours for Project Role {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Resources Insert Refresh Covered Hours for Project Role</label>
     <loops>
         <name>Resources_Loop</name>
         <label>Resources Loop</label>
@@ -53,7 +53,6 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <description>Only Resources from current Project Id and the current Role</description>
         <name>Get_Resources</name>
         <label>Get Resources</label>
         <locationX>176</locationX>
@@ -93,7 +92,7 @@
             <field>Project__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.Project__r.Id</elementReference>
+                <elementReference>$Record.Project__c</elementReference>
             </value>
         </filters>
         <filters>
@@ -117,30 +116,11 @@
         <connector>
             <targetReference>Get_Resources</targetReference>
         </connector>
-        <filterLogic>or</filterLogic>
-        <filters>
-            <field>Hours__c</field>
-            <operator>IsChanged</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
         <object>Resource__c</object>
-        <recordTriggerType>Update</recordTriggerType>
+        <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
-    <variables>
-        <name>CoveredHours</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <scale>2</scale>
-        <value>
-            <numberValue>0.0</numberValue>
-        </value>
-    </variables>
     <variables>
         <name>total_hours</name>
         <dataType>Number</dataType>
